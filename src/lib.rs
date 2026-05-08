@@ -1,3 +1,5 @@
+#![no_std]
+
 modwire::expose!(
     pub bits
     pub bound
@@ -35,17 +37,17 @@ pub type Result<T> = core::result::Result<T, Error>;
 #[derive(serde::Serialize)]
 #[derive(serde::Deserialize)]
 pub enum Error {
-    #[error("Overflow.")]
+    #[error("{}", 0)]
     Overflow,
-    #[error("Underflow.")]
+    #[error("{}", 0)]
     Underflow,
-    #[error("Division by zero.")]
+    #[error("{}", 0)]
     DivisionByZero,
-    #[error("Modulo by zero.")]
+    #[error("{}", 0)]
     ModuloByZero,
-    #[error("Shift overflow.")]
+    #[error("{}", 0)]
     ShiftOverflow,
-    #[error("Negation overflow.")]
+    #[error("{}", 0)]
     NegationOverflow,
     #[error("{}", 0)]
     UnsupportedConversion
@@ -128,55 +130,6 @@ where
     Self: core::convert::TryInto<u128>,
     Self: core::convert::TryInto<usize> {}
 
-pub trait Float
-where
-    Self: core::marker::Sized,
-    Self: Num,
-    Self: ArcTan,
-    Self: ArcSin,
-    Self: ArcCos,
-    Self: Tan,
-    Self: Sin,
-    Self: Cos,
-    Self: ToRad,
-    Self: ToDeg,
-    Self: PowF,
-    Self: PowI {}
-
-pub trait Num
-where
-    Self: QuickAccess,
-    Self: Sqrt,
-    Self: ToPrim,
-    Self: core::default::Default,
-    Self: core::clone::Clone,
-    Self: core::marker::Sized,
-    Self: core::marker::Copy,
-    Self: core::cmp::PartialEq,
-    Self: core::cmp::PartialOrd,
-    Self: core::fmt::Debug,
-    Self: core::fmt::Display,
-    Self: core::ops::Add<Output = Self>,
-    Self: core::ops::AddAssign,
-    Self: core::ops::Sub<Output = Self>,
-    Self: core::ops::SubAssign,
-    Self: core::ops::Mul<Output = Self>,
-    Self: core::ops::MulAssign,
-    Self: core::ops::Div<Output = Self>,
-    Self: core::ops::DivAssign,
-    Self: core::ops::Rem<Output = Self>,
-    Self: core::ops::RemAssign,
-    Self: for<'a> core::ops::Add<&'a Self, Output = Self>,
-    Self: for<'a> core::ops::AddAssign<&'a Self>,
-    Self: for<'a> core::ops::Sub<&'a Self, Output = Self>,
-    Self: for<'a> core::ops::SubAssign<&'a Self>,
-    Self: for<'a> core::ops::Mul<&'a Self, Output = Self>,
-    Self: for<'a> core::ops::MulAssign<&'a Self>,
-    Self: for<'a> core::ops::Div<&'a Self, Output = Self>,
-    Self: for<'a> core::ops::DivAssign<&'a Self>,
-    Self: for<'a> core::ops::Rem<&'a Self, Output = Self>,
-    Self: for<'a> core::ops::RemAssign<&'a Self> {}
-
 impl<T> Int for T
 where
     T: core::marker::Sized,
@@ -254,6 +207,21 @@ where
     T: core::convert::TryInto<u128>,
     T: core::convert::TryInto<usize> {}
 
+pub trait Float
+where
+    Self: core::marker::Sized,
+    Self: Num,
+    Self: ArcTan,
+    Self: ArcSin,
+    Self: ArcCos,
+    Self: Tan,
+    Self: Sin,
+    Self: Cos,
+    Self: ToRad,
+    Self: ToDeg,
+    Self: PowF,
+    Self: PowI {}
+
 impl<T> Float for T
 where
     T: core::marker::Sized,
@@ -269,6 +237,40 @@ where
     T: ToDeg,
     T: PowF,
     T: PowI {}
+
+pub trait Num
+where
+    Self: QuickAccess,
+    Self: Sqrt,
+    Self: ToPrim,
+    Self: core::default::Default,
+    Self: core::clone::Clone,
+    Self: core::marker::Sized,
+    Self: core::marker::Copy,
+    Self: core::cmp::PartialEq,
+    Self: core::cmp::PartialOrd,
+    Self: core::fmt::Debug,
+    Self: core::fmt::Display,
+    Self: core::ops::Add<Output = Self>,
+    Self: core::ops::AddAssign,
+    Self: core::ops::Sub<Output = Self>,
+    Self: core::ops::SubAssign,
+    Self: core::ops::Mul<Output = Self>,
+    Self: core::ops::MulAssign,
+    Self: core::ops::Div<Output = Self>,
+    Self: core::ops::DivAssign,
+    Self: core::ops::Rem<Output = Self>,
+    Self: core::ops::RemAssign,
+    Self: for<'a> core::ops::Add<&'a Self, Output = Self>,
+    Self: for<'a> core::ops::AddAssign<&'a Self>,
+    Self: for<'a> core::ops::Sub<&'a Self, Output = Self>,
+    Self: for<'a> core::ops::SubAssign<&'a Self>,
+    Self: for<'a> core::ops::Mul<&'a Self, Output = Self>,
+    Self: for<'a> core::ops::MulAssign<&'a Self>,
+    Self: for<'a> core::ops::Div<&'a Self, Output = Self>,
+    Self: for<'a> core::ops::DivAssign<&'a Self>,
+    Self: for<'a> core::ops::Rem<&'a Self, Output = Self>,
+    Self: for<'a> core::ops::RemAssign<&'a Self> {}
 
 impl<T> Num for T
 where

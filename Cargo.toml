@@ -1,11 +1,15 @@
 [package]
 name = "num_ops"
+description = "A strict and expressive `no_std` numeric traits library for generics"
 version = "0.1.0"
 edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/snqre/num_ops"
+readme = "readme"
 
 [dependencies]
-modwire = "0.1.0"
-paste = "1.0.15"
-thiserror = "*"
-serde = { version = "*", features = ["derive"] }
-strum = { version = "*", features = ["derive"] }
+modwire = ">=0.1.0,<1.0.0"
+paste = ">=1.0.15,<2.0.0"
+thiserror = ">=2.0.18,<3.0.0"
+serde = { version = ">=1.0.228,<2.0.0", features = ["derive"] }
+strum = { version = ">=0.28.0,<1.0.0", features = ["derive"] }
