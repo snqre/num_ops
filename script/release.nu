@@ -8,6 +8,7 @@ let bin_path = $"($bin_dir)/($name)"
 print $"releasing ($name) ($tag)"
 
 if (git status --porcelain | is-not-empty) {
+	print "working directory is dirty: commit or stash changes"
 	exit 1
 }
 

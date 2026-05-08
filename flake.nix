@@ -57,14 +57,16 @@
 				
 				text = 
 				let
-					src = builtins.readFile ./script/release.nu;
-					srcT = builtins.replaceStrings [ 
+					src_template = builtins.readFile ./script/release.nu;
+					
+					src = builtins.replaceStrings [ 
 						"@bin_path@" 
 					] [ 
-						"${self'.packages.default}/bin/($pname)" 
-					] src;
+						"${self'.packages.default}/bin" 
+					] src_template;
 				in ''
-					nu -c '${srcT}'
+					# shellcheck disable=SC2016
+					nu -c '${src}'
 				'';
 			};
 			
