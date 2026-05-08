@@ -2,3 +2,10 @@
 name = "num_ops"
 version = "0.1.0"
 edition = "2024"
+
+[dependencies]
+modwire = "0.1.0"
+paste = "1.0.15"
+thiserror = "*"
+serde = { version = "*", features = ["derive"] }
+strum = { version = "*", features = ["derive"] }
