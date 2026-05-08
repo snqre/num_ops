@@ -9,7 +9,7 @@
 	} {
 		systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
-		perSystem = { pkgs, system, ... }: 
+		perSystem = { self', pkgs, system, ... }: 
 		let
 			crane_lib = inputs.crane.mkLib pkgs;
 			crane_src = crane_lib.cleanCargoSource (crane_lib.path ./.);
@@ -43,8 +43,34 @@
 				inherit cargoArtifacts;
 			};
 			
+			packages.release = pkgs.writeShellApplication {
+				name = "release";
+				
+				runtimeInputs = [
+					pkgs.nushell
+					pkgs.cargo
+					pkgs.rustc
+					pkgs.pkg-config
+					pkgs.openssl
+					pkgs.gh
+				];
+				
+				text = 
+				let
+					src = builtins.readFile ./script/release.nu;
+					srcT = builtins.replaceStrings [ 
+						"@bin_path@" 
+					] [ 
+						"${self'.packages.default}/bin/($pname)" 
+					] src;
+				in ''
+					nu -c '${srcT}'
+				'';
+			};
+			
 			devShells.default = pkgs.mkShell {
 				nativeBuildInputs = [
+					pkgs.nushell
 					pkgs.nixd
 					pkgs.nixpkgs-fmt
 					pkgs.clippy
@@ -52,8 +78,11 @@
 					pkgs.rustc
 					pkgs.rust-analyzer
 					pkgs.pkg-config
+					
+					self'.packages.release
 				];
 			};
 		};
 	};
 }
+ 
